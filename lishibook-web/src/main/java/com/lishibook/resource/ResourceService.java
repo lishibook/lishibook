@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import com.lishibook.dao.ResourceDao;
 import com.lishibook.entity.Resource;
 
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/resource")
 public class ResourceService {
 	

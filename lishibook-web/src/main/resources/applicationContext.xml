@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -10,22 +9,24 @@
         http://www.springframework.org/schema/context/spring-context.xsd 
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx.xsd">
-	
+
 	<!-- spring 将自动扫描以下包 -->
 	<context:component-scan base-package="com.lishibook.dao" />
 	<!-- <context:component-scan base-package="com.lishibook.service" /> -->
 	<context:component-scan base-package="com.lishibook.shiro" />
-	
-	<!-- shiro 配置 -->
-	<bean id="myRealm" class="com.lishibook.shiro.SimpleRealm"></bean>
+
+	<bean id="myRealm" class="com.lishibook.shiro.SimpleRealm" />
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myRealm" />
+		<!-- By default the servlet container sessions will be used. Uncomment 
+			this line to use shiro's native sessions (see the JavaDoc for more): -->
+		<!-- <property name="sessionMode" value="native"/> -->
 	</bean>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 	</bean>
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-	
+
 	<!-- 配置DataSource数据源 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -43,7 +44,7 @@
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.lishibook.entity" /> 
+		<property name="packagesToScan" value="com.lishibook.entity" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -51,8 +52,9 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"/>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

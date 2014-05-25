@@ -29,7 +29,7 @@ public class User implements Serializable {
     
     private Date birthday;
     
-    private String iconid;
+    private String iconurl;
     
     private String regip;
     
@@ -101,12 +101,12 @@ public class User implements Serializable {
 		this.birthday = birthday;
 	}
 
-	public String getIconid() {
-		return iconid;
+	public String getIconurl() {
+		return iconurl;
 	}
 
-	public void setIconid(String iconid) {
-		this.iconid = iconid;
+	public void setIconurl(String iconurl) {
+		this.iconurl = iconurl;
 	}
 
 	public String getRegip() {
