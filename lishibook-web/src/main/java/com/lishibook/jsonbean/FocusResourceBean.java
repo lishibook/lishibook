@@ -11,7 +11,7 @@ public class FocusResourceBean {
 	
 	private int focusResourceId;//所关注的资源
 	
-	private int focusGroup;//从属于那个关注组
+	private int focusGroup;//从属于关注组
 	
 	private String focusDescription;//关注描述
 	

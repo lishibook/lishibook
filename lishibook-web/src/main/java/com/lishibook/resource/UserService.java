@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -103,7 +104,7 @@ public class UserService {
 	
 	@GET
 	@Path("/logout")
-	public Response logout(@CookieParam("userid") int userid) {
+	public Response logout() {
 		BaseResultBean result = new BaseResultBean();
 		
 		Subject currentUser = SecurityUtils.getSubject();
@@ -112,7 +113,10 @@ public class UserService {
 		result.setStatus(1);
 		result.setMessage("注销成功！");
 		
-		logger.info("用户 " + userid + "注销登录！");
-		return Response.status(200).entity(result).cookie((NewCookie)null).build();
+		logger.info("用户注销登录！");
+		
+		NewCookie userCookie = new NewCookie(new Cookie("userid", ""), null, 0, null, false, false);
+		NewCookie sessionCookie = new NewCookie(new Cookie("JSESSIONID", ""), null, 0, null, false, false);
+		return Response.status(200).entity(new NewCookie("userid", "")).cookie(userCookie, sessionCookie).build();
 	}
 }
