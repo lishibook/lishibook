@@ -27,6 +27,7 @@ import com.lishibook.dao.UserDao;
 import com.lishibook.entity.User;
 import com.lishibook.jsonbean.BaseResultBean;
 import com.lishibook.jsonbean.LoginBean;
+import com.lishibook.jsonbean.UserInfoBean;
 import com.lishibook.utils.EncryptUtils;
 
 @Produces(MediaType.APPLICATION_JSON)
@@ -41,7 +42,7 @@ public class UserService {
 	
 	@GET
 	@Path("/get")
-	public User get(@CookieParam("userid") int userid){
+	public UserInfoBean get(@CookieParam("userid") int userid){
 		
 		User user = userDao.get(userid);
 		Subject currentUser = SecurityUtils.getSubject();
@@ -54,7 +55,15 @@ public class UserService {
 			user.setPassword("");
 		}
 		
-		return user;
+		UserInfoBean userInfoBean = new UserInfoBean();
+		if(user != null){
+			userInfoBean.setStatus(1);
+		} else {
+			userInfoBean.setStatus(-1);
+		}
+		
+		userInfoBean.setInfo(user);
+		return userInfoBean;
 	}
 	
 	@POST
@@ -117,6 +126,6 @@ public class UserService {
 		
 		NewCookie userCookie = new NewCookie(new Cookie("userid", ""), null, 0, null, false, false);
 		NewCookie sessionCookie = new NewCookie(new Cookie("JSESSIONID", ""), null, 0, null, false, false);
-		return Response.status(200).entity(new NewCookie("userid", "")).cookie(userCookie, sessionCookie).build();
+		return Response.status(200).entity(result).cookie(userCookie, sessionCookie).build();
 	}
 }

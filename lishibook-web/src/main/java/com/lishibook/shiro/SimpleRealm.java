@@ -1,7 +1,5 @@
 package com.lishibook.shiro;
 
-import javax.inject.Inject;
-
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -44,7 +42,7 @@ public class SimpleRealm extends AuthorizingRealm {
 		
 		User user = userDao.getUserByEmail(userName);
 		
-		if(user != null && !password.isEmpty() && password.equals(password)){
+		if(user != null && !password.isEmpty() && user.getPassword() != null && user.getPassword().equals(password)){
 			SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userName, password, getName());
 			return info;
 		}

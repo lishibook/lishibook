@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.lishibook.dao.ResourceDao;
 import com.lishibook.entity.Resource;
+import com.lishibook.jsonbean.ResourceInfoBean;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/resource")
@@ -19,7 +20,18 @@ public class ResourceService {
 	
 	@GET
 	@Path("/{resourceId}")
-	public Resource get(@PathParam("resourceId") int resourceId){
-		return resourceDao.get(resourceId);
+	public ResourceInfoBean get(@PathParam("resourceId") int resourceId){
+		Resource resource = resourceDao.get(resourceId);
+		
+		ResourceInfoBean resourceInfoBean = new ResourceInfoBean();
+		if(resource != null){
+			resourceInfoBean.setStatus(1);
+		} else {
+			resourceInfoBean.setStatus(-1);
+		}
+		
+		resourceInfoBean.setInfo(resource);
+		
+		return resourceInfoBean;
 	}
 }
