@@ -1,6 +1,7 @@
 package com.lishibook.application;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class LBApplication extends ResourceConfig {
@@ -10,5 +11,6 @@ public class LBApplication extends ResourceConfig {
      */
     public LBApplication () {
     	packages("com.lishibook.resource").register(JacksonFeature.class);
+    	packages("org.glassfish.jersey.examples.multipart").register(MultiPartFeature.class);
     }
 }

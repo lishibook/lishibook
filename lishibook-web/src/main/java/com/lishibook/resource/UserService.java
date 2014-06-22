@@ -1,6 +1,8 @@
 package com.lishibook.resource;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -39,6 +41,14 @@ public class UserService {
 	
 	@Inject
 	private UserDao userDao;
+	
+	@GET
+	@Path("/test")
+	public Map<String, String> test(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("A", "B");
+		return map;
+	}
 	
 	@GET
 	@Path("/get")

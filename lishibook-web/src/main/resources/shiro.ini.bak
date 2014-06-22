@@ -1,3 +1,0 @@
-[main]  
-realm1=com.lishibook.shiro.SimpleRealm
-securityManager.realms=$realm1

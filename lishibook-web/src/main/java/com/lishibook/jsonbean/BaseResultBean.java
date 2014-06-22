@@ -15,6 +15,15 @@ public class BaseResultBean implements Serializable {
 
 	private String message;// 错误时消息
 
+	public BaseResultBean(){
+		
+	}
+	
+	public BaseResultBean(int status, String message){
+		this.status = status;
+		this.message = message;
+	}
+	
 	public int getStatus() {
 		return status;
 	}
