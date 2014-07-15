@@ -7,6 +7,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lishibook.dao.ResourceDao;
 import com.lishibook.entity.Resource;
 import com.lishibook.jsonbean.ResourceInfoBean;
@@ -15,12 +18,16 @@ import com.lishibook.jsonbean.ResourceInfoBean;
 @Path("/resource")
 public class ResourceService {
 	
+	private static Logger logger = LoggerFactory.getLogger(ResourceService.class);
+	
 	@Inject
 	private ResourceDao resourceDao;
 	
 	@GET
 	@Path("/{resourceId}")
 	public ResourceInfoBean get(@PathParam("resourceId") int resourceId){
+		logger.info("Enter ResourceService.get");
+		
 		Resource resource = resourceDao.get(resourceId);
 		
 		ResourceInfoBean resourceInfoBean = new ResourceInfoBean();
@@ -32,6 +39,7 @@ public class ResourceService {
 		
 		resourceInfoBean.setInfo(resource);
 		
+		logger.info("Exit ResourceService.get");
 		return resourceInfoBean;
 	}
 }

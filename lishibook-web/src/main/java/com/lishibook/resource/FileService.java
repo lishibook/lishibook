@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lishibook.exception.LBException;
-import com.lishibook.exception.PermissionException;
 import com.lishibook.jsonbean.SuccessOutput;
 import com.lishibook.jsonbean.UploadResult;
 import com.lishibook.jsonbean.UploadSuccessResult;
@@ -34,7 +33,7 @@ import com.lishibook.jsonbean.UploadSuccessResult;
 @Path("/file")
 public class FileService {
 	
-	public final static String IMG_DIR = "D:\\img";
+	private final static String IMG_DIR = "/usr/share/nginx/html/img/";
 	
 	private static Logger logger = LoggerFactory.getLogger(FileService.class);
 	
@@ -43,9 +42,10 @@ public class FileService {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public UploadResult upload(
 			@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) throws PermissionException{
+			@FormDataParam("file") FormDataContentDisposition fileDetail) {
 		
-		logger.debug("Enter FileService.upload");
+		logger.info("Enter FileService.upload");
+		
 		Subject currentUser = SecurityUtils.getSubject();
 		
 		if (!currentUser.hasRole("admin")) {
@@ -66,12 +66,12 @@ public class FileService {
 		
 		String fileName = getPath(fileDetail.getFileName());
 		
-		File f = new File(path + "\\" + fileName);
+		File f = new File(path + File.separator + fileName);
 		
 		//已经存在同名文件
 		while(f.exists()){
 			fileName = getPath(fileDetail.getFileName());
-			f = new File(path + "\\" + fileName);
+			f = new File(path + File.separator + fileName);
 		}
 		
 		FileOutputStream outputStream;
@@ -97,14 +97,18 @@ public class FileService {
 			logger.info(e.toString());
 		}
 		
+		logger.info("上传成功！");
 		output.setName(fileDetail.getFileName());
 		output.setSize(fileDetail.getSize());
 		
-		String url = "/lishibook/pictures/" + dirName + "/" + fileName;
+		String url = "/img/" + dirName + "/" + fileName;
+		
 		output.setUrl(url);
 		
 		list.add(output);
 		result.setFiles(list);
+		
+		logger.debug("Exit FileService.upload");
 		return result;
 	}
 	

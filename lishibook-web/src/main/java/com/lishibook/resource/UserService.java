@@ -80,6 +80,7 @@ public class UserService {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(LoginBean loginBean) {
+		logger.info("Enter UserService.login");
 		
 		BaseResultBean result = new BaseResultBean();
 		
@@ -101,10 +102,13 @@ public class UserService {
 				String s = (String)session.getId();
 				result.setStatus(1);
 				result.setMessage("登录成功！");
-				logger.info("用户 " + loginBean.getEmail() + "成功登录！");
 				
+				logger.info("用户 " + loginBean.getEmail() + "成功登录！");
+				logger.info("Exit UserService.login");
 				//We must set JSESSIONID here for shiro to work correctly.
-				return Response.status(200).entity(result).cookie(new NewCookie("userid", String.valueOf(user.getId())), new NewCookie("JSESSIONID", s)).build();
+				return Response.status(200).entity(result).cookie(
+						new NewCookie("userid", String.valueOf(user.getId()), "/", "lishibook.com", null, NewCookie.DEFAULT_MAX_AGE, false),
+						new NewCookie("JSESSIONID", s, "/", "lishibook.com", null, NewCookie.DEFAULT_MAX_AGE, false)).build();
 			} catch(AuthenticationException e){
 				logger.info(e.toString());
 
@@ -118,12 +122,15 @@ public class UserService {
 			
 		}
 		
+		logger.info("Exit UserService.login");
 		return Response.status(200).entity(result).build();
 	}
 	
 	@GET
 	@Path("/logout")
 	public Response logout() {
+		logger.info("Enter UserService.logout");
+		
 		BaseResultBean result = new BaseResultBean();
 		
 		Subject currentUser = SecurityUtils.getSubject();
@@ -136,6 +143,8 @@ public class UserService {
 		
 		NewCookie userCookie = new NewCookie(new Cookie("userid", ""), null, 0, null, false, false);
 		NewCookie sessionCookie = new NewCookie(new Cookie("JSESSIONID", ""), null, 0, null, false, false);
+		
+		logger.info("Exit UserService.logout");
 		return Response.status(200).entity(result).cookie(userCookie, sessionCookie).build();
 	}
 }
