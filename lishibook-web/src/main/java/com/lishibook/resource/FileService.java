@@ -25,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lishibook.exception.LBException;
-import com.lishibook.jsonbean.SuccessOutput;
-import com.lishibook.jsonbean.UploadResult;
-import com.lishibook.jsonbean.UploadSuccessResult;
+import com.lishibook.outbean.SuccessOutput;
+import com.lishibook.outbean.UploadResult;
+import com.lishibook.outbean.UploadSuccessResult;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/file")

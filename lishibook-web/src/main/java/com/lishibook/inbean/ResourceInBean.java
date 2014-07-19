@@ -1,13 +1,11 @@
-package com.lishibook.jsonbean;
+package com.lishibook.inbean;
 
 /**
  * 资源的基本信息
  * @author mengtao
  *
  */
-public class ResourceBean {
-	
-	private int id;
+public class ResourceInBean {
 	
 	private String name;
 
@@ -15,18 +13,8 @@ public class ResourceBean {
     
     private String description;
     
-    private int views;
+    private String content;
     
-    private boolean isfocus;//是否被当前资源关注
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -51,21 +39,11 @@ public class ResourceBean {
 		this.description = description;
 	}
 
-	public int getViews() {
-		return views;
+	public String getContent() {
+		return content;
 	}
 
-	public void setViews(int views) {
-		this.views = views;
+	public void setContent(String content) {
+		this.content = content;
 	}
-
-	public boolean isIsfocus() {
-		return isfocus;
-	}
-
-	public void setIsfocus(boolean isfocus) {
-		this.isfocus = isfocus;
-	}
-    
-    
 }

@@ -27,9 +27,9 @@ import org.springframework.stereotype.Service;
 
 import com.lishibook.dao.UserDao;
 import com.lishibook.entity.User;
-import com.lishibook.jsonbean.BaseResultBean;
-import com.lishibook.jsonbean.LoginBean;
-import com.lishibook.jsonbean.UserInfoBean;
+import com.lishibook.inbean.LoginInBean;
+import com.lishibook.outbean.BaseBean;
+import com.lishibook.outbean.UserInfoBean;
 import com.lishibook.utils.EncryptUtils;
 
 @Produces(MediaType.APPLICATION_JSON)
@@ -79,10 +79,10 @@ public class UserService {
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response login(LoginBean loginBean) {
+	public Response login(LoginInBean loginBean) {
 		logger.info("Enter UserService.login");
 		
-		BaseResultBean result = new BaseResultBean();
+		BaseBean result = new BaseBean();
 		
 		Subject currentUser = SecurityUtils.getSubject();
 		
@@ -131,7 +131,7 @@ public class UserService {
 	public Response logout() {
 		logger.info("Enter UserService.logout");
 		
-		BaseResultBean result = new BaseResultBean();
+		BaseBean result = new BaseBean();
 		
 		Subject currentUser = SecurityUtils.getSubject();
 		currentUser.logout();

@@ -1,4 +1,4 @@
-package com.lishibook.jsonbean;
+package com.lishibook.outbean;
 
 public class SuccessOutput {
 	

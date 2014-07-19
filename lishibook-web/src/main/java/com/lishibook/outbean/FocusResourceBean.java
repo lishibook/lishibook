@@ -1,4 +1,4 @@
-package com.lishibook.jsonbean;
+package com.lishibook.outbean;
 
 /**
  * 资源关注的其他资源的有关信息

@@ -1,11 +1,11 @@
-package com.lishibook.jsonbean;
+package com.lishibook.inbean;
 
 /**
  * Get from frontend. 
  * @author mengtao
  *
  */
-public class LoginBean {
+public class LoginInBean {
 	
 	private String email;
 	
