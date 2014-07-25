@@ -4,6 +4,7 @@ import java.lang.reflect.ParameterizedType;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 @SuppressWarnings("unchecked")
 public class BaseDao<T>{
@@ -39,7 +40,9 @@ public class BaseDao<T>{
 	
 	public void save(T entity) {
 		Session session = sessionFactory.openSession();
+		Transaction t = session.beginTransaction();
 		session.save(entity);
+		t.commit();
 		session.close();
 	}
 }

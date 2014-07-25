@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.lishibook.dao.UserDao;
 import com.lishibook.entity.User;
+import com.lishibook.exception.LBException;
 import com.lishibook.inbean.LoginInBean;
 import com.lishibook.outbean.BaseBean;
 import com.lishibook.outbean.UserInfoBean;
@@ -57,20 +58,14 @@ public class UserService {
 		User user = userDao.get(userid);
 		Subject currentUser = SecurityUtils.getSubject();
 		
-		if(currentUser.isAuthenticated()){//已登录
-			System.out.println(currentUser);
+		if(!currentUser.isAuthenticated() || user == null){//未登录
+			throw new LBException("not login");
 		} 
-		if(user != null){
-			//can not expose password;
-			user.setPassword("");
-		}
+		
+		user.setPassword("");
 		
 		UserInfoBean userInfoBean = new UserInfoBean();
-		if(user != null){
-			userInfoBean.setStatus(1);
-		} else {
-			userInfoBean.setStatus(-1);
-		}
+		userInfoBean.setStatus(1);
 		
 		userInfoBean.setInfo(user);
 		return userInfoBean;

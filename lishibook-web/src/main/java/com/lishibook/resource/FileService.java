@@ -112,6 +112,81 @@ public class FileService {
 		return result;
 	}
 	
+	@POST
+	@Path("/iconupload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public UploadResult iconUpload(
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail) {
+		
+		logger.info("Enter FileService.upload");
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		
+		if (!currentUser.hasRole("admin")) {
+			throw new LBException("no permission");
+		}
+		
+		UploadSuccessResult result = new UploadSuccessResult();
+		
+		List<SuccessOutput> list = new ArrayList<SuccessOutput>();
+		SuccessOutput output = new SuccessOutput();
+
+		String dirName = getDirName();
+		String path = IMG_DIR + dirName;
+		File pathFile = new File(path);
+		if(!pathFile.exists() || !pathFile.isDirectory()){
+			pathFile.mkdirs();
+		}
+		
+		String fileName = getPath(fileDetail.getFileName());
+		
+		File f = new File(path + File.separator + fileName);
+		
+		//已经存在同名文件
+		while(f.exists()){
+			fileName = getPath(fileDetail.getFileName());
+			f = new File(path + File.separator + fileName);
+		}
+		
+		FileOutputStream outputStream;
+		try {
+			outputStream = new FileOutputStream(f);
+			int length = 0;
+			byte[] buff = new byte[1024];
+			
+			try {
+				while((length = uploadedInputStream.read(buff)) != -1){
+					outputStream.write(buff, 0, length);
+				}
+			} catch (IOException e) {
+				logger.info(e.toString());
+			} finally {
+				uploadedInputStream.close();
+				outputStream.close();
+			}
+			
+		} catch (FileNotFoundException e) {
+			logger.info(e.toString());
+		} catch (IOException e) {
+			logger.info(e.toString());
+		}
+		
+		logger.info("上传成功！");
+		output.setName(fileDetail.getFileName());
+		output.setSize(fileDetail.getSize());
+		
+		String url = "/img/" + dirName + "/" + fileName;
+		
+		output.setUrl(url);
+		
+		list.add(output);
+		result.setFiles(list);
+		
+		logger.debug("Exit FileService.upload");
+		return result;
+	}
+	
 	//生成一个文件名
 	private String getPath(String originalName){
 		//文件名的第一部分：时间戳

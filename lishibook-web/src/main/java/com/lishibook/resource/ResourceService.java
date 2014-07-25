@@ -15,7 +15,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.lishibook.dao.ResourceDao;
 import com.lishibook.entity.Resource;
 import com.lishibook.exception.LBException;
@@ -36,8 +35,7 @@ public class ResourceService {
 	@GET
 	@Path("/show/{resourceId}")
 	public ResourceInfoBean get(@PathParam("resourceId") int resourceId){
-		logger.info("Enter ResourceService.get");
-		
+
 		Resource resource = resourceDao.get(resourceId);
 		
 		ResourceInfoBean resourceInfoBean = new ResourceInfoBean();
@@ -49,14 +47,12 @@ public class ResourceService {
 		
 		resourceInfoBean.setInfo(resource);
 		
-		logger.info("Exit ResourceService.get");
 		return resourceInfoBean;
 	}
 	
 	@POST
 	@Path("/add")
 	public BaseBean add(@CookieParam("userid") int userid, ResourceInBean resource){
-		logger.info("Enter ResourceService.add");
 		
 		Subject currentUser = SecurityUtils.getSubject();
 		
@@ -76,6 +72,55 @@ public class ResourceService {
 		entity.setLasteditid(userid);
 		entity.setViews(0);
 		resourceDao.save(entity);
+		logger.info("资源 " + entity.getId()  + ":" + entity.getName() + " 添加成功");
+		
+		ResourceAddBean result = new ResourceAddBean(1, "资源添加成功", entity.getId());
+		return result;
+	}
+	
+	@POST
+	@Path("/edit/{resourceId}")
+	public BaseBean edit(@PathParam("resourceId") int resourceId, @CookieParam("userid") int userid, ResourceInBean resource){
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		
+		if (!currentUser.hasRole("admin")) {
+			throw new LBException("no permission");
+		}
+		
+		Resource entity = new Resource();
+		entity.setId(resourceId);
+		entity.setName(resource.getName());
+		Date date = new Date();
+		entity.setCreatetime(date);
+		entity.setLastedittime(date);
+		entity.setIconurl(resource.getIconurl());
+		entity.setDescription(resource.getDescription());
+		entity.setContent(resource.getContent());
+		entity.setCreatorid(userid);
+		entity.setLasteditid(userid);
+		entity.setViews(0);
+		resourceDao.save(entity);
+		logger.info("资源" + entity.getId()  + ":" + entity.getName() + " 编辑成功.");
+		
+		ResourceAddBean result = new ResourceAddBean(1, "资源添加成功", entity.getId());
+		return result;
+	}
+	
+	@GET
+	@Path("/edit/{resourceId}")
+	public BaseBean delete(@PathParam("resourceId") int resourceId, @CookieParam("userid") int userid){
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		
+		if (!currentUser.hasRole("admin")) {
+			throw new LBException("no permission");
+		}
+		
+		Resource entity = new Resource();
+		entity.setId(resourceId);
+		resourceDao.delete(entity);
+		logger.info("资源" + entity.getId() + ":" + entity.getName() + " 删除成功.");
 		
 		ResourceAddBean result = new ResourceAddBean(1, "资源添加成功", entity.getId());
 		return result;
