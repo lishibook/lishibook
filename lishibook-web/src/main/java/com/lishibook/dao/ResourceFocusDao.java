@@ -46,4 +46,16 @@ public class ResourceFocusDao extends BaseDao<ResourceFocus>{
 		session.close();
 		return (ResourceFocus) obj;
 	}
+	
+	public List<ResourceFocus> getByGroupId(int groupId){
+		Session session = sessionFactory.openSession();
+		
+		Criteria crit = session.createCriteria(ResourceFocus.class);
+		crit.add(Restrictions.eq("groupid", groupId));
+		@SuppressWarnings("unchecked")
+		List<ResourceFocus> list = crit.list();
+		
+		session.close();
+		return list;
+	}
 }

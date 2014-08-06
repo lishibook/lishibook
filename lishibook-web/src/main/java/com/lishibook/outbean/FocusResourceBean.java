@@ -7,6 +7,8 @@ package com.lishibook.outbean;
  */
 public class FocusResourceBean {
 	
+	private int id;//focus id
+	
 	private int fromResourceId;
 	
 	private int focusResourceId;//所关注的资源
@@ -23,6 +25,14 @@ public class FocusResourceBean {
 	
 	private int views;//关注资源已经被访问的次数
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public int getFromResourceId() {
 		return fromResourceId;
 	}
@@ -86,6 +96,7 @@ public class FocusResourceBean {
 	public void setViews(int views) {
 		this.views = views;
 	}
+
 	
 	
 }

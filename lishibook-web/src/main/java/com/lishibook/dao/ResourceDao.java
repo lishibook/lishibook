@@ -36,6 +36,4 @@ public class ResourceDao extends BaseDao<Resource>{
 		session.close();
 		return list;
 	}
-
-	
 }

@@ -28,7 +28,9 @@ public class BaseDao<T>{
 
 	public void update(T entity) {
 		Session session = sessionFactory.openSession();
+		Transaction t = session.beginTransaction();
 		session.update(entity);
+		t.commit();
 		session.close();
 	}
 

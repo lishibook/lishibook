@@ -25,7 +25,7 @@ public class ResourceFocus implements Serializable{
 
     private Integer groupid;
 
-    private String desc;
+    private String description;
 
     private Date time;
 
@@ -61,14 +61,13 @@ public class ResourceFocus implements Serializable{
 		this.groupid = groupid;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-
 	public Date getTime() {
 		return time;
 	}
@@ -76,4 +75,5 @@ public class ResourceFocus implements Serializable{
 	public void setTime(Date time) {
 		this.time = time;
 	}
+
 }
